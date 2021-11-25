@@ -19,6 +19,6 @@ git clone https://github.com/dhorthe/Ansible.git
 
 3. Apply the configuration
 ```bash
-ansible-playbook tools/ubuntu.yml --ask-become-pass
+ansible-playbook tools/devUbuntu.yml --ask-become-pass
 ```
 >Type your password when asked to give root permissions for some actions.
