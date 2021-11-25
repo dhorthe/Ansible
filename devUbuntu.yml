@@ -1,0 +1,51 @@
+---
+- name: Preparing Workstation Developers
+  hosts: localhost
+  connection: local
+  tasks:
+
+    - name: Installing Linux Apps
+      become: true
+      apt:
+        name: '{{ item }}'
+        install_recommends: yes
+        state: present
+      loop:
+          - curl
+          - wget
+          - apt-transport-https
+          - make
+          - git
+          - flameshot
+
+    #- name: Installing OCS Inventory
+    #  gather_facts: true
+    #  roles: 
+    #    - ocs_agent
+    #  vars:
+    #    - ocs_server: inventario.azi.com.br/ocsinventory
+    #    - ocs_ssl: true
+    #    - ocs_tag: '{{ ansible_hostname }}'
+
+    - name: Create AZ-Workspace
+      file:
+        path: /home/az/WorkspaceAZ
+        state: directory
+
+    - block:
+      - name: Install Google Key
+        become: true
+        apt_key:
+          url: 'https://dl.google.com/linux/linux_signing_key.pub'
+          state: present
+      - name: Install Google Repository
+        become: true
+        apt_repository:
+          repo: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
+          state: present
+          filename: google-chrome
+      - name: Install Google Chrome
+        become: true
+        apt:
+          name: google-chrome-stable
+
